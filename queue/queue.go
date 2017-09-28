@@ -1,38 +1,34 @@
+//Array based First In First Out(FIFO)/Queue
 package main
 
 import "fmt"
 
-const size = 5
+const MAX = 5
 
-var queue [size]interface{}
+var queue [MAX]interface{}
 var rear = -1
 var front = -1
+var size int
 
 func main() {
-	enQueue(121)
-	enQueue(1120)
-	enQueue(1222)
-	enQueue(11)
-	enQueue("Go FTW!")
-	deQueue()
-	enQueue("another item")
-
-	fmt.Println(queue)
 
 }
 
-func enQueue(item interface{}) {
+func enQueue(item interface{}) error {
 	if isFull() {
 		fmt.Println("queue is full!")
-		return
+		return fmt.Errorf("queue is full")
 	}
 
 	if front == -1 {
 		front = 0
 	}
 
-	rear = (rear + 1) % size
+	rear = (rear + 1) % MAX
+	size++
 	queue[rear] = item
+
+	return nil
 
 }
 
@@ -48,7 +44,8 @@ func deQueue() interface{} {
 		front = -1
 		rear = -1
 	} else {
-		front = (front + 1) % size
+		front = (front + 1) % MAX
+		size--
 	}
 
 	return data
@@ -56,7 +53,7 @@ func deQueue() interface{} {
 }
 
 func isFull() bool {
-	if front == 0 && rear == size-1 {
+	if front == 0 && rear == MAX-1 {
 		return true
 	}
 
